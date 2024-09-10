@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/eric-batista/neowire-api-task-manager-poc/application"
 	"github.com/eric-batista/neowire-api-task-manager-poc/models"
 	"github.com/gin-gonic/gin"
@@ -20,6 +22,20 @@ func main() {
 
 	// Inicializa o router Gin
 	r := gin.Default()
+
+	r.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusOK)
+			return
+		}
+
+		c.Next()
+	})
 
 	// Registra os endpoints da API
 	application.RegisterTaskRoutes(r, db)

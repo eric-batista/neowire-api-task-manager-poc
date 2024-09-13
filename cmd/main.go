@@ -4,23 +4,25 @@ import (
 	"net/http"
 
 	"github.com/eric-batista/neowire-api-task-manager-poc/application"
-	"github.com/eric-batista/neowire-api-task-manager-poc/models"
+	"github.com/eric-batista/neowire-api-task-manager-poc/domain/models"
+	"github.com/eric-batista/neowire-api-task-manager-poc/infra/core"
+	infra "github.com/eric-batista/neowire-api-task-manager-poc/infra/database"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
 func main() {
-	// Inicializa a conexão com o banco de dados (SQLite para simplificação)
-	db, err := gorm.Open(sqlite.Open("tasks.db"), &gorm.Config{})
+	baseConfig := core.SetEnvs()
+
+	dbConfig := infra.CreateDBConfig()
+	db, err := infra.ConnectDB(dbConfig)
 	if err != nil {
 		panic("Falha ao conectar ao banco de dados")
 	}
 
-	// Faz a migração do modelo de Task
-	db.AutoMigrate(&models.Task{})
+	if err := db.AutoMigrate(&models.Task{}); err != nil {
+		panic("Falha ao rodar migrations")
+	}
 
-	// Inicializa o router Gin
 	r := gin.Default()
 
 	r.Use(func(c *gin.Context) {
@@ -37,9 +39,8 @@ func main() {
 		c.Next()
 	})
 
-	// Registra os endpoints da API
-	application.RegisterTaskRoutes(r, db)
-
-	// Inicia o servidor
+	router := r.Group(baseConfig.BasePath)
+	router_v1 := router.Group("/v1")
+	application.ApplicationRouter(router_v1, db)
 	r.Run(":8080") // Executa na porta 8080
 }

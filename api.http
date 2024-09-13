@@ -3,7 +3,8 @@ POST http://localhost:8080/neowire/tasks-manager/v1/tasks
 {
     "title": "teste",
     "description": "Teste neles",
-    "status": "Peding"
+    "status": "peding",
+    "clientId": "db7d28fe-b051-45a6-98f1-03c18d904438"
 }
 
 ###
@@ -15,3 +16,16 @@ GET http://localhost:8080/neowire/tasks-manager/v1/tasks
 {
     "clientId": "db7d28fe-b051-45a6-98f1-03c18d904438"
 }
+
+###
+PATCH http://localhost:8080/neowire/tasks-manager/v1/tasks/424fb68c-2915-467c-a5e3-bae66050c063
+
+{
+    "title": "teste",
+    "description": "Teste neles",
+    "status": "done",
+    "clientId": "db7d28fe-b051-45a6-98f1-03c18d904438"
+}
+
+###
+DELETE http://localhost:8080/neowire/tasks-manager/v1/tasks/424fb68c-2915-467c-a5e3-bae66050c063

@@ -42,6 +42,26 @@ func NewTask(title, description, status, clientId string) (*Task, error) {
 	return &task, nil
 }
 
+func UpdateTask(task *Task, title, description, status, clientId string) (*Task, error) {
+	newTask := Task{
+		Title:       title,
+		Description: description,
+		Status:      status,
+	}
+
+	newTask.ID = task.ID
+	newTask.ClientID = task.ClientID
+	newTask.CreatedAt = task.CreatedAt
+	newTask.UpdatedAt = time.Now()
+
+	err := newTask.isValid()
+	if err != nil {
+		return nil, err
+	}
+
+	return &newTask, err
+}
+
 type TaskPayload struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`

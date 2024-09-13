@@ -33,6 +33,20 @@ func RegisterTaskRoutes(r *gin.RouterGroup, db *gorm.DB) {
 			c.JSON(http.StatusOK, response)
 		}
 	})
-	r.PATCH("/tasks/:id", func(c *gin.Context) {})
-	r.DELETE("/tasks/:id", func(c *gin.Context) {})
+	r.PATCH("/tasks/:id", func(c *gin.Context) {
+		if response, err := usecases.UpdateTask(c, db, c.Param("id")); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		} else {
+			c.JSON(http.StatusOK, response)
+		}
+	})
+	r.DELETE("/tasks/:id", func(c *gin.Context) {
+		if err := usecases.DeleteTask(c, db, c.Param("id")); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		} else {
+			c.JSON(http.StatusOK, nil)
+		}
+	})
 }

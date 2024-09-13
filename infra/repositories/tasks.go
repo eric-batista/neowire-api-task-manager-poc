@@ -31,3 +31,17 @@ func (r TasksRepositortyDB) RetrieveTask(taskID string) (*models.Task, error) {
 	}
 	return &result, nil
 }
+
+func (r TasksRepositortyDB) DeleteTask(taskID string) error {
+	if err := r.DB.Table("tasks").Where("id = ?", taskID).Delete("tasks"); err.Error != nil {
+		return err.Error
+	}
+	return nil
+}
+
+func (r TasksRepositortyDB) UpdateTask(task *models.Task, taskID string) (*models.Task, error) {
+	if err := r.DB.Table("tasks").Where("id = ?", taskID).Updates(&task); err.Error != nil {
+		return nil, err.Error
+	}
+	return task, nil
+}

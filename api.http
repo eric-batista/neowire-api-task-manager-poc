@@ -5,3 +5,13 @@ POST http://localhost:8080/neowire/tasks-manager/v1/tasks
     "description": "Teste neles",
     "status": "Peding"
 }
+
+###
+GET http://localhost:8080/neowire/tasks-manager/v1/tasks/424fb68c-2915-467c-a5e3-bae66050c063
+
+###
+GET http://localhost:8080/neowire/tasks-manager/v1/tasks
+
+{
+    "clientId": "db7d28fe-b051-45a6-98f1-03c18d904438"
+}

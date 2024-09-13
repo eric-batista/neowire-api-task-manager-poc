@@ -24,7 +24,7 @@ func (task *Task) isValid() error {
 	return nil
 }
 
-func NewTask(title, description, status string) (*Task, error) {
+func NewTask(title, description, status, clientId string) (*Task, error) {
 	task := Task{
 		Title:       title,
 		Description: description,
@@ -32,6 +32,7 @@ func NewTask(title, description, status string) (*Task, error) {
 	}
 
 	task.ID = uuid.NewV4().String()
+	task.ClientID = clientId
 	task.CreatedAt = time.Now()
 
 	err := task.isValid()
@@ -42,7 +43,16 @@ func NewTask(title, description, status string) (*Task, error) {
 }
 
 type TaskPayload struct {
-	Title       string
-	Description string
-	Status      string
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+	ClientID    string `json:"clientId"`
+}
+
+type TaskListPayload struct {
+	ClientID string `json:"clientId"`
+}
+
+type RetrieveTask struct {
+	TaskID string `json:"taskId"`
 }

@@ -17,8 +17,22 @@ func RegisterTaskRoutes(r *gin.RouterGroup, db *gorm.DB) {
 			c.JSON(http.StatusOK, response)
 		}
 	})
-	r.GET("/tasks", func(c *gin.Context) {})
-	r.GET("/tasks/:id", func(c *gin.Context) {})
+	r.GET("/tasks", func(c *gin.Context) {
+		if response, err := usecases.RetrieveAllTasks(c, db); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		} else {
+			c.JSON(http.StatusOK, response)
+		}
+	})
+	r.GET("/tasks/:id", func(c *gin.Context) {
+		if response, err := usecases.RetrieveTask(c, db, c.Param("id")); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		} else {
+			c.JSON(http.StatusOK, response)
+		}
+	})
 	r.PATCH("/tasks/:id", func(c *gin.Context) {})
 	r.DELETE("/tasks/:id", func(c *gin.Context) {})
 }

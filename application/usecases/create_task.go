@@ -13,7 +13,7 @@ func CreateNewTask(c *gin.Context, db *gorm.DB) (*models.Task, error) {
 		return nil, err
 	}
 
-	task, err := models.NewTask(payload.Title, payload.Description, payload.Status)
+	task, err := models.NewTask(payload.Title, payload.Description, payload.Status, payload.ClientID)
 	if err != nil {
 		return nil, err
 	}

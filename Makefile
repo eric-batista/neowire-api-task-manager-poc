@@ -1,5 +1,5 @@
 run:
-	@go run cmd/main.go
+	@go run cmd/main.go -path .
 
 test:
-	@go test -timeout 30s -coverprofile=./coverage github.com/eric-batista/neowire-api-task-manager-poc/domain/models -v
+	@go test -timeout 30s -coverprofile=./coverage ./... -v
